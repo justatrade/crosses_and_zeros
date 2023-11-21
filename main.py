@@ -9,12 +9,13 @@ def choose_first_move():
     return random.choice(['Human', 'AI'])
 
 
-def make_ai_move():
+def make_ai_move(p, m) -> None:
     '''
     Create a best move for an ai
     :return: return coordinates of a move
     '''
-    pass
+    p.make_move(random.choice(p.get_available_moves()), m.sign['AI'])
+    m.move_done()
 
 
 def make_human_move(p, m) -> None:
@@ -40,10 +41,19 @@ def main():
     second = 'AI' if first == 'Human' else 'Human'
     m = move.Move(FIELD_SIZE, first, second)
     p = plgr.Playground(FIELD_SIZE)
+    cur_move = ''
     while p.get_available_moves() and not p.check_if_win():
-        make_human_move(p, m)
+        cur_move = m.next_move()
+        if cur_move == 'Human':
+            if len(p.get_available_moves()) == FIELD_SIZE ** 2:
+                print('Make your first move')
+                p.draw_field()
+            make_human_move(p, m)
+        else:
+            make_ai_move(p, m)
         p.draw_field()
-
+    else:
+        print(f'{cur_move} wins')
 
 
 if __name__ == '__main__':
