@@ -32,7 +32,7 @@ class Playground:
         for i in range(len(temp_field)):
             print(''.join(temp_field[i]))
 
-    def _get_available_moves(self) -> list[tuple[int, int]]:
+    def get_available_moves(self) -> list[tuple[int, int]]:
         '''
         List of available moves
         :return:
@@ -51,9 +51,9 @@ class Playground:
         '''
         pass
 
-    def make_move(self) -> bool:
+    def make_move(self, move: tuple[int, int], sign: str) -> None:
         '''
         Put a move on a playfield
         :return:
         '''
-        pass
+        self.field[move[0]-1][move[1]-1] = sign

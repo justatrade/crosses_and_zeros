@@ -1,7 +1,11 @@
+import move
 import playground as plgr
 import random
 
-def chose_first_move():
+FIELD_SIZE = 3
+
+
+def choose_first_move():
     return random.choice(['Human', 'AI'])
 
 
@@ -13,12 +17,17 @@ def make_ai_move():
     pass
 
 
-def get_human_move():
+def make_human_move(p, m) -> None:
     '''
     Get human input as a coordinates
     :return: return coordinates of a move
     '''
-    pass
+    cur_move = (-1, -1)
+    while cur_move not in p.get_available_moves():
+        cur_move = tuple(map(lambda x: int(x), input().split()))
+    else:
+        p.make_move(cur_move, m.sign['Human'])
+        m.move_done()
 
 
 
@@ -27,10 +36,18 @@ def main():
     Main management orchestration function
     :return:
     '''
-    pass
+    first = choose_first_move()
+    second = 'AI' if first == 'Human' else 'Human'
+    m = move.Move(FIELD_SIZE, first, second)
+    p = plgr.Playground(FIELD_SIZE)
+    while p.get_available_moves() and not p.check_if_win():
+        make_human_move(p, m)
+        p.draw_field()
+
 
 
 if __name__ == '__main__':
-    p = plgr.Playground(3)
-    p.draw_field()
-    print(p._get_available_moves())
+    main()
+    # p = plgr.Playground(FIELD_SIZE)
+    # p.draw_field()
+    # print(p.get_available_moves())
