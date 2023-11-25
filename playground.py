@@ -1,5 +1,5 @@
 class Playground:
-    BASE_MARK = '.'
+    base_mark = '.'
 
     def __init__(self, size):
         if size >= 3:
@@ -52,20 +52,20 @@ class Playground:
         """
         for row in range(len(self.field)):
             if (len(set(self.field[row])) == 1 and
-                    self.field[row][0] != self.BASE_MARK):
+                    self.field[row][0] != self.base_mark):
                 return True
         for col in range(len(self.field)):
             cur_col = []
             for row in range(len(self.field)):
                 cur_col.append(self.field[row][col])
             if (len(set(cur_col)) == 1 and
-                    cur_col[0] != self.BASE_MARK):
+                    cur_col[0] != self.base_mark):
                 return True
         left_cross = [self.field[x][x] for x in range(len(self.field))]
         right_cross = [self.field[x][-1-x] for x in range(len(self.field))]
-        if len(set(left_cross)) == 1 and left_cross[0] != self.BASE_MARK:
+        if len(set(left_cross)) == 1 and left_cross[0] != self.base_mark:
             return True
-        if len(set(right_cross)) == 1 and right_cross[0] != self.BASE_MARK:
+        if len(set(right_cross)) == 1 and right_cross[0] != self.base_mark:
             return True
         return False
 
