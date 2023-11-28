@@ -1,5 +1,7 @@
+from typing import Final
+
 class Playground:
-    base_mark = '.'
+    base_mark: Final = '.'
 
     def __init__(self, size):
         if size >= 3:
