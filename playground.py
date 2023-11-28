@@ -1,4 +1,7 @@
+from typing import Final
+
 class Playground:
+    base_mark: Final = '.'
 
     def __init__(self, size):
         if size >= 3:
@@ -8,12 +11,12 @@ class Playground:
         self.field = [['.' for _ in range(self.size)] for _ in range(self.size)]
 
     def draw_field(self) -> None:
-        '''
+        """
         Show the current field with all moves.
         Creating a temp full field with borders, then put the current moves
         values on it
         :return:
-        '''
+        """
         temp_field = []
         x_border = []
         for i in range(self.size+1):
@@ -32,11 +35,11 @@ class Playground:
         for i in range(len(temp_field)):
             print(''.join(temp_field[i]))
 
-    def _get_available_moves(self) -> list[tuple[int, int]]:
-        '''
+    def get_available_moves(self) -> list[tuple[int, int]]:
+        """
         List of available moves
         :return:
-        '''
+        """
         available_moves = []
         for y in range(self.size):
             for x in range(self.size):
@@ -45,15 +48,32 @@ class Playground:
         return available_moves
 
     def check_if_win(self) -> bool:
-        '''
+        """
         Check weather game is done or not
         :return: True or False
-        '''
-        pass
+        """
+        for row in range(len(self.field)):
+            if (len(set(self.field[row])) == 1 and
+                    self.field[row][0] != self.base_mark):
+                return True
+        for col in range(len(self.field)):
+            cur_col = []
+            for row in range(len(self.field)):
+                cur_col.append(self.field[row][col])
+            if (len(set(cur_col)) == 1 and
+                    cur_col[0] != self.base_mark):
+                return True
+        left_cross = [self.field[x][x] for x in range(len(self.field))]
+        right_cross = [self.field[x][-1-x] for x in range(len(self.field))]
+        if len(set(left_cross)) == 1 and left_cross[0] != self.base_mark:
+            return True
+        if len(set(right_cross)) == 1 and right_cross[0] != self.base_mark:
+            return True
+        return False
 
-    def make_move(self) -> bool:
-        '''
+    def make_move(self, move: tuple[int, int], sign: str) -> None:
+        """
         Put a move on a playfield
         :return:
-        '''
-        pass
+        """
+        self.field[move[0]-1][move[1]-1] = sign
