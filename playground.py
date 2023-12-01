@@ -1,5 +1,6 @@
 from typing import Final
 
+
 class Playground:
     base_mark: Final = '.'
 
@@ -44,7 +45,7 @@ class Playground:
         for y in range(self.size):
             for x in range(self.size):
                 if self.field[y][x] == '.':
-                    available_moves.append((y+1, x+1))
+                    available_moves.append((y, x))
         return available_moves
 
     def check_if_win(self) -> bool:
@@ -76,4 +77,4 @@ class Playground:
         Put a move on a playfield
         :return:
         """
-        self.field[move[0]-1][move[1]-1] = sign
+        self.field[move[0]][move[1]] = sign
