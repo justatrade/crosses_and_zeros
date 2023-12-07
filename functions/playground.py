@@ -11,7 +11,7 @@ class Playground:
             raise ValueError
         self.field = [['.' for _ in range(self.size)] for _ in range(self.size)]
 
-    def draw_field(self) -> None:
+    def draw_field(self) -> str:
         """
         Show the current field with all moves.
         Creating a temp full field with borders, then put the current moves
@@ -33,8 +33,9 @@ class Playground:
             temp_y.extend([self.field[i-1][x//2] if x % 2 == 0 else '|' for x in range(self.size*2-1)])
             temp_field.append(temp_y)
         temp_field.append(['y'])
-        for i in range(len(temp_field)):
-            print(''.join(temp_field[i]))
+        return '\n'.join(
+            [''.join(temp_field[i]) for i in range(len(temp_field))]
+        )
 
     def get_available_moves(self) -> list[tuple[int, int]]:
         """

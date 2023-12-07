@@ -1,6 +1,6 @@
 from collections import Counter
-from move import Move
-from playground import Playground
+from functions.move import Move
+from functions.playground import Playground
 from random import choice
 from typing import Final
 
@@ -60,7 +60,6 @@ def find_line_candidates(playground: Playground,
         line_candidates.append(right_cross_candidate)
     if len(left_cross) == FIELD_SIZE - 1 and left_cross_candidate:
         line_candidates.append(left_cross_candidate)
-    print(line_candidates)
     return line_candidates
 
 
@@ -83,7 +82,7 @@ def best_defence_move(
     Defining point which could be ending for several lines, if there's not - returns nothing
 
     :param line_candidates:
-    :return:
+    :return: One best move for current situation
     """
     if not line_candidates:
         return None
@@ -140,11 +139,11 @@ def main():
         if cur_move == 'Human':
             if len(playground.get_available_moves()) == FIELD_SIZE ** 2:
                 print('Make your first move')
-                playground.draw_field()
+                print(playground.draw_field())
             make_human_move(playground, move)
         else:
             make_ai_move(playground, move)
-        playground.draw_field()
+        print(playground.draw_field())
     else:
         if playground.check_if_win():
             print(f'{cur_move} wins')
