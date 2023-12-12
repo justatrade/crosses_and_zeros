@@ -41,8 +41,12 @@ def test__draw_field__success(size, expected):
     assert test_playground.draw_field() == expected
 
 
-base_3x3_field_matrix = [['.', '.', '.'], ['.', '.', '.'], ['.', '.', '.']]
-some_3x3_field_matrix = [['.', 'X', '.'], ['X', '0', '0'], ['.', 'X', '.']]
+base_3x3_field_matrix = [['.', '.', '.'],
+                         ['.', '.', '.'],
+                         ['.', '.', '.']]
+some_3x3_field_matrix = [['.', 'X', '.'],
+                         ['X', '0', '0'],
+                         ['.', 'X', '.']]
 
 
 @pytest.mark.parametrize('field, expected',
@@ -60,15 +64,23 @@ def test__get_available_moves__success(field, expected):
     assert test_playground.get_available_moves() == expected
 
 
-winning_matrix = [([['X', 'X', 'X'] if x == i else ['.', '.', '.'] for x in range(3)]) for i in range(3)]
+# winning_matrix = [([['X', 'X', 'X'] if x == i else ['.', '.', '.'] for x in range(3)]) for i in range(3)]
+winning_matrix = []
+for matrix in range(3):
+    current_matrix = []
+    for line_index in range(3):
+        line = ['X', 'X', 'X'] if line_index == matrix else ['.', '.', '.']
+        current_matrix.append(line)
+    winning_matrix.append(current_matrix)
+
 winning_matrix.extend(
-    [[['X' if x == i else '.' for x in range(3)] for j in range(3)] for i in range(3)]
+    [[['X' if elem == y else '.' for elem in range(3)] for x in range(3)] for y in range(3)]
 )
 winning_matrix.extend(
-    [[['X' if x == y else '.' for y in range(3)] for x in range(3)] for i in range(1)]
+    [[['X' if elem == x else '.' for elem in range(3)] for x in range(3)] for y in range(1)]
 )
 winning_matrix.extend(
-    [[['X' if x == 3 - 1 - y else '.' for y in range(3)] for x in range(3)] for i in range(1)]
+    [[['X' if x == 3 - 1 - elem else '.' for elem in range(3)] for x in range(3)] for y in range(1)]
 )
 
 
@@ -103,6 +115,7 @@ def test__check_if_win__fail(field, expected):
     test_playground.field = field
 
     assert test_playground.check_if_win() == expected
+
 
 @pytest.mark.parametrize('move,  sign, expected',
                          [

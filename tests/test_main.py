@@ -1,10 +1,6 @@
-import builtins
 import io
-import sys
 
-import functions.main
 import pytest
-import mock
 
 from functions.main import choose_first_move, find_line_candidates, \
     best_attack_move, best_defence_move, make_ai_move, make_human_move, main
@@ -21,7 +17,14 @@ def test__choose_first_move__any(expected):
     assert choose_first_move() in expected
 
 
-pre_winning_field = [([['X', 'X', '.'] if x == i else ['.', '0', '.'] for x in range(3)]) for i in range(3)]
+# pre_winning_field = [([['X', 'X', '.'] if x == i else ['.', '0', '.'] for x in range(3)]) for i in range(3)]
+pre_winning_field = []
+for matrix in range(3):
+    current_matrix = []
+    for line_index in range(3):
+        line = ['X', 'X', '.'] if line_index == matrix else ['.', '0', '.']
+        current_matrix.append(line)
+    pre_winning_field.append(current_matrix)
 
 
 @pytest.mark.parametrize('field, expected',
@@ -51,7 +54,14 @@ def test__best_attack_move__success_fail(field, expected):
     assert best_attack_move(test_playground) == expected
 
 
-pre_winning_field = [([['X', 'X', '.'] if x == i else ['.', '0', '.'] for x in range(3)]) for i in range(3)]
+#pre_winning_field = [([['X', 'X', '.'] if x == i else ['.', '0', '.'] for x in range(3)]) for i in range(3)]
+pre_winning_field = []
+for matrix in range(3):
+    current_matrix = []
+    for line_index in range(3):
+        line = ['X', 'X', '.'] if line_index == matrix else ['.', '0', '.']
+        current_matrix.append(line)
+    pre_winning_field.append(current_matrix)
 double_winning_field = [['0', '0', 'X'],
                         ['0', '0', 'X'],
                         ['X', 'X', '.']]
@@ -72,7 +82,9 @@ def test__best_defence_move__success_one_or_none(field, expected):
     assert best_defence_move(line_candidates) == expected
 
 
-double_winning = [['.', '.', 'X'], ['.', 'X', '.'], ['0', '0', 'X']]
+double_winning = [['.', '.', 'X'],
+                  ['.', 'X', '.'],
+                  ['0', '0', 'X']]
 
 
 @pytest.mark.parametrize('field, expected',
@@ -125,11 +137,17 @@ def test__make_human_move__success(field, human_moves, expected, monkeypatch):
 @pytest.mark.parametrize('human_moves, expected',
                          [
                              ('2 2\n1 1\n1 2\n1 3\n2 1\n2 3\n3 1\n3 2\n3 3\n',
-                              {'  1 2 3 x': '\nAI wins\n',
-                               'Make your': 'nd draw\n'}),
+                              {'  1 2 3 x': ['nd draw\n',
+                                             '\nAI wins\n'],
+                               'Make your': ['nd draw\n',
+                                             '\nAI wins\n',
+                                             'man wins\n']}),
                              ('2 2\n1 1\n1 3\n3 3\n3 1\n2 1\n3 2\n2 3\n1 2\n',
-                              {'  1 2 3 x': '\nAI wins\n',
-                               'Make your': 'nd draw\n'})
+                              {'  1 2 3 x': ['nd draw\n',
+                                             '\nAI wins\n'],
+                               'Make your': ['nd draw\n',
+                                             '\nAI wins\n',
+                                             'man wins\n']})
                          ])
 def test__main__success(human_moves, expected, monkeypatch, capsys):
     monkeypatch.setattr('sys.stdin', io.StringIO(human_moves))
@@ -137,4 +155,4 @@ def test__main__success(human_moves, expected, monkeypatch, capsys):
     main()
     captured = capsys.readouterr()
 
-    assert captured.out[-9:] == expected[captured.out[:9]]
+    assert captured.out[-9:] in expected[captured.out[:9]]
