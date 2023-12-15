@@ -1,5 +1,6 @@
 from typing import Final
 
+
 class Playground:
     base_mark: Final = '.'
 
@@ -10,7 +11,7 @@ class Playground:
             raise ValueError
         self.field = [['.' for _ in range(self.size)] for _ in range(self.size)]
 
-    def draw_field(self) -> None:
+    def draw_field(self) -> str:
         """
         Show the current field with all moves.
         Creating a temp full field with borders, then put the current moves
@@ -32,8 +33,9 @@ class Playground:
             temp_y.extend([self.field[i-1][x//2] if x % 2 == 0 else '|' for x in range(self.size*2-1)])
             temp_field.append(temp_y)
         temp_field.append(['y'])
-        for i in range(len(temp_field)):
-            print(''.join(temp_field[i]))
+        return '\n'.join(
+            [''.join(temp_field[i]) for i in range(len(temp_field))]
+        )
 
     def get_available_moves(self) -> list[tuple[int, int]]:
         """
@@ -44,7 +46,7 @@ class Playground:
         for y in range(self.size):
             for x in range(self.size):
                 if self.field[y][x] == '.':
-                    available_moves.append((y+1, x+1))
+                    available_moves.append((y, x))
         return available_moves
 
     def check_if_win(self) -> bool:
@@ -76,4 +78,4 @@ class Playground:
         Put a move on a playfield
         :return:
         """
-        self.field[move[0]-1][move[1]-1] = sign
+        self.field[move[0]][move[1]] = sign
